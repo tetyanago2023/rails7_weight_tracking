@@ -1,9 +1,20 @@
 class WeightsController < ApplicationController
-  before_action :set_weight, only: %i[ show edit update destroy ]
+  include Weightable
 
+  before_action :set_weight, only: %i[ show edit update destroy ]
+  before_action :authenticate_user!
   # GET /weights or /weights.json
   def index
-    @weights = Weight.all
+    @pagy, @weights = pagy(current_user.weights.order(date: :desc))
+  end
+
+  def dashboard
+    @weights = current_user.weights.where(date: date_range)
+    @averages = @weights.group(:date).average(:value)
+    respond_to do |format|
+      format.html
+      format.json { render json: @averages }
+    end
   end
 
   # GET /weights/1 or /weights/1.json
