@@ -30,7 +30,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_07_230803) do
     t.float "value"
     t.date "date"
     t.bigint "user_id", null: false
-    t.string "unit", default: "kg"
+    t.string "unit", default: "lbs"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_weights_on_user_id"

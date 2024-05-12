@@ -25,7 +25,7 @@ class Weight < ApplicationRecord
 
   private
 
-  def convert_to_kilograms
+  def convert_to_kg
     if unit == 'lbs'
       self.value = Weight.lbs_to_kg(value)
       self.unit = 'kg'
