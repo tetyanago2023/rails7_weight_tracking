@@ -32,7 +32,7 @@ class WeightsController < ApplicationController
 
   # POST /weights or /weights.json
   def create
-    @weight = Weight.new(weight_params)
+    @weight = Weight.new(weight_params.merge(user: current_user))
 
     respond_to do |format|
       if @weight.save
@@ -72,10 +72,11 @@ class WeightsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_weight
       @weight = Weight.find(params[:id])
+      redirect_to weights_url, notice: "You are not authorized to view this weight." unless @weight.user == current_user
     end
 
     # Only allow a list of trusted parameters through.
     def weight_params
-      params.require(:weight).permit(:value, :date, :user_id, :unit)
+      params.require(:weight).permit(:value, :date, :unit)
     end
 end
